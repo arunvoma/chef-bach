@@ -18,7 +18,7 @@
 # limitations under the License.
 
 #
-#Mon May 04 12:07:47 EDT 2015
+#Thu May 14 18:50:49 EDT 2015
 agent.package.install.task.timeout=1800
 agent.task.timeout=900
 agent.threadpool.size.max=25
@@ -59,14 +59,22 @@ server.execution.scheduler.maxThreads=5
 server.execution.scheduler.misfire.toleration.minutes=480
 server.fqdn.service.url=http://169.254.169.254/latest/meta-data/public-hostname
 server.http.session.inactive_timeout=1800
-server.jdbc.database=postgres
+server.jdbc.database=mysql
 server.jdbc.database_name=ambari
+server.jdbc.driver=com.mysql.jdbc.Driver
+server.jdbc.hostname=fbcpc-vm2
+server.jdbc.port=3306
 server.jdbc.postgres.schema=ambari
+server.jdbc.rca.driver=com.mysql.jdbc.Driver
+server.jdbc.rca.url=jdbc:mysql://fbcpc-vm2:3306/ambari
+server.jdbc.rca.user.name=ambari
+server.jdbc.rca.user.passwd=/etc/ambari-server/conf/password.dat
+server.jdbc.url=jdbc:mysql://fbcpc-vm2:3306/ambari
 server.jdbc.user.name=ambari
 server.jdbc.user.passwd=/etc/ambari-server/conf/password.dat
 server.os_family=ubuntu12
 server.os_type=ubuntu12
-server.persistence.type=local
+server.persistence.type=remote
 server.stages.parallel=true
 server.tmp.dir=/var/lib/ambari-server/tmp
 server.version.file=/var/lib/ambari-server/resources/version
