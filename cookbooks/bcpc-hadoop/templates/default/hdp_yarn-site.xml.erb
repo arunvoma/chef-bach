@@ -176,20 +176,20 @@
 <property>
      <description>The hostname of the timeline server web application.</description>
      <name>yarn.timeline-service.hostname</name>
-     <value>0.0.0.0</value>
+     <value><%= node['yarn']['timelineservice']['hostname']%></value>
 </property>
 
 
 <property>
      <description>This is default address for the timeline server to start the RPC server.</description>
      <name>yarn.timeline-service.address</name>
-     <value>f-bcpc-vm3:10200</value>
+     <value><%= node['yarn']['timelineservice']['hostname']%>:10200</value>
 </property>
 
 <property>
      <description>The http address of the timeline server web application.</description>
      <name>yarn.timeline-service.webapp.address</name>
-     <value>f-bcpc-vm3:8188</value>
+     <value><%= node['yarn']['timelineservice']['hostname']%>:8188</value>
 </property>
 
 <property>
