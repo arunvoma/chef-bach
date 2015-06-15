@@ -13,6 +13,7 @@ default["bcpc"]["repos"]["hortonworks"] = 'http://public-repo-1.hortonworks.com/
 default["bcpc"]["repos"]["hdp_utils"] = 'http://public-repo-1.hortonworks.com/HDP-UTILS-1.1.0.20/repos/ubuntu12'
 default["bcpc"]["hadoop"]["disks"] = []
 default["bcpc"]["hadoop"]["oozie"]["admins"] = []
+default["bcpc"]["hadoop"]["oozie"]["memory_opts"] = "-Xmx2048m -XX:MaxPermSize=256m"
 default["bcpc"]["hadoop"]["yarn"]["nodemanager"]["avail_memory"]["ratio"] = 0.8
 default["bcpc"]["hadoop"]["yarn"]["nodemanager"]["avail_memory"]["size"] = nil
 default["bcpc"]["hadoop"]["yarn"]["nodemanager"]["avail_vcpu"]["ratio"] = 0.8
@@ -38,6 +39,9 @@ default["bcpc"]["hadoop"]["kafka"]["jmx"]["port"] = 9995
 default["bcpc"]["hadoop"]["java"] = "/usr/lib/jvm/java-1.7.0-openjdk-amd64"
 default["bcpc"]["hadoop"]["topology"]["script"] = "topology"
 default["bcpc"]["hadoop"]["topology"]["cookbook"] = "bcpc-hadoop"
+
+# Setting balancer bandwidth to default value as per hdfs-default.xml
+default["bcpc"]["hadoop"]["balancer"]["bandwidth"] = 1048576
 #
 # Attributes for service rolling restart process
 #
@@ -94,6 +98,9 @@ default["bcpc"]["hadoop"]["zabbix"]["trend_days"] = 15
 default["bcpc"]["hadoop"]["zabbix"]["cron_check_time"] = 240
 default["bcpc"]["hadoop"]["zabbix"]["mail_source"] = "zabbix.zbx_mail.sh.erb"
 default["bcpc"]["hadoop"]["zabbix"]["cookbook"] = nil 
+
+# Graphite queries which specify property to query and alarming trigger, severity
+# and owner who the trigger is routed to for resolution
 default["bcpc"]["hadoop"]["graphite"]["queries"] = {
    'namenode' => [
     {
@@ -105,7 +112,8 @@ default["bcpc"]["hadoop"]["graphite"]["queries"] = {
       'trigger_name' => "NameNodeAvailability",
       'trigger_enable' => true,
       'trigger_desc' => "Namenode service seems to be down",
-      'severity' => 2
+      'severity' => 2,
+      'route_to' => "admin"
     },
     {
       'type'  => "jmx",
@@ -123,7 +131,8 @@ default["bcpc"]["hadoop"]["graphite"]["queries"] = {
       'trigger_name' => "HBaseMasterAvailability",
       'trigger_dep' => ["NameNodeAvailability"],
       'trigger_desc' => "HBase master seems to be down",
-      'severity' => 1
+      'severity' => 1,
+      'route_to' => "admin"
     },
     {
       'type'  => "jmx",
@@ -142,7 +151,8 @@ default["bcpc"]["hadoop"]["graphite"]["queries"] = {
       'trigger_enable' => true,
       'trigger_dep' => ["HBaseMasterAvailability"],
       'trigger_desc' => "HBase region server seems to be down",
-      'severity' => 2
+      'severity' => 2,
+      'route_to' => "admin"
     }
   ]
 }
