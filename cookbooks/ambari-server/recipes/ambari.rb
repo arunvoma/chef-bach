@@ -29,16 +29,6 @@ node.override[:ambari][:database][:password] = get_config('ambari-database-passw
 AMBARIPASSWORD = node[:ambari][:database][:password]
 
 
-
-bash "download_repo" do
-code <<EOH
-wget -nv #{ambari_repo_url} -O /etc/apt/sources.list.d/ambari.list
-apt-key adv --recv-keys --keyserver
-wget #{hdp_repo_url}  -O /etc/apt/sources.list.d/hdp.list
-apt-get update
-EOH
-end
-
 %w{ambari-server tez }.each do |pkg|
   package pkg do
     action :install
