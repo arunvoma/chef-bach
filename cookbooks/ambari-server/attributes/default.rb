@@ -1,5 +1,4 @@
-
-
+#Ambari Server Specific attributes
 
 default[:ambari][:repo][:url] = "http://public-repo-1.hortonworks.com/ambari/ubuntu12/2.x/updates/2.0.0/ambari.list"
 default[:ambari][:hdp][:repo][:url] = "http://public-repo-1.hortonworks.com/HDP/ubuntu12/2.x/updates/2.2.4.2/hdp.list"

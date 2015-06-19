@@ -1,10 +1,5 @@
-#
 # Cookbook Name:: ambari-server
 # Description : Recipe to install Ambari-server and TEZ libraries on a given host and creates a TEZ View Instance. 
-
-
-
-
 
 
 ambari_repo_url = node[:ambari][:repo][:url]
