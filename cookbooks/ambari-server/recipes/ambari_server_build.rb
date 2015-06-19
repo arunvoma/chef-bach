@@ -39,3 +39,10 @@ rm -rf  #{node[:ambari][:temp_dir]} #{node[:ambari][:new_deb_path]} #{node[:amba
 EOH
 end
 
+bash "Executing Build Bins Script" do
+cwd /home/vagrant/chef-bcpc
+code <<EOH
+./build_bins.sh 
+EOH
+end
+
