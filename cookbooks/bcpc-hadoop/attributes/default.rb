@@ -4,6 +4,8 @@
 #
 #############################################
 
+#default['yarn']['timelineservice']['hostname']=float_host(get_nodes_for("application_timelineserver","bcpc-hadoop")[0].name)
+default['yarn']['timelineservice']['hostname']=""
 default["bcpc"]["hadoop"] = {}
 default["bcpc"]["zookeeper"]["id"] = 0
 default["bcpc"]["namenode"]["id"] = -1
