@@ -5,24 +5,25 @@
 ambari_repo_url = node[:ambari][:repo][:url]
 hdp_repo_url = node[:ambari][:hdp][:repo][:url]
 repo_dir = node[:ambari][:repo][:dir]
+
+node.set[:ambari][:server]="#{float_host(get_nodes_for("ambari","ambari-server")[0].fqdn)}"
+puts "#{float_host(get_nodes_for("ambari","ambari-server")[0].fqdn)}"
 ambari_server_ip = node[:ambari][:server]
 instance_name = node[:ambari][:view][:instance_name]
 AMBARIUSER = node[:ambari][:database][:username]
 AMBARISERVERFQDN = node[:ambari][:server]
 AMBARIDATABASE = node[:ambari][:database][:name]
-yarn_timelineserver_url="http://<%= node['ambari']['yarn']['timelineserver']['host']%>:8188"
-yarn_resourcemanager_url="http://<%= node['ambari']['yarn']['resourcemgr']['host']%>:8088"
-ambari_url= "http://<%= node['ambari']['server']%>:8080/api/v1/views/TEZ/versions/0.5.2.2.2.2.0-151/instances"
+yarn_timelineserver_url="http://#{float_host(get_nodes_for("ambari","ambari-server")[0].fqdn)}:8088"
+yarn_resourcemanager_url="http://#{float_host(get_nodes_for("ambari","ambari-server")[0].fqdn)}:8188"
+
+ambari_url= "http://#{float_host(get_nodes_for("ambari","ambari-server")[0].fqdn)}:8080/api/v1/views/TEZ/versions/0.5.2.2.2.2.0-151/instances"
 make_config('ambari-database-password', secure_password(64))
 node.override[:ambari][:database][:password] = get_config('ambari-database-password')
 AMBARIPASSWORD = node[:ambari][:database][:password]
 
 #Variables used in creating TEZ view
 
-yarn_timelineserver_url = node[:ambari][:yarn][:timelineserver][:url]
-yarn_resourcemanager_url = node[:ambari][:yarn][:resourcemanager][:url]
 instance_name = node[:ambari][:view][:instance_name]
-ambari_uri = node[:ambari][:server][:url]
 
 
 
@@ -35,9 +36,9 @@ mode "0644"
 end
 
 bash "Installing Ambari server" do
-code <<EOH
-dpkg -i "/tmp/ambari.deb"
-rm -rf /tmp/ambari.deb
+ code <<EOH
+ dpkg -i "/tmp/ambari.deb"
+ rm -rf /tmp/ambari.deb
 EOH
 end
 
@@ -118,8 +119,8 @@ end
 #Code block to create TEZ View Instance
 
 execute "create tez view instance" do
-command "curl -H \"X-Requested-By:ambari\" -u admin:admin -X POST -d '[{ \"ViewInstanceInfo\" : { \"label\" : \"Tez custom View\", \"properties\" : {\"yarn.timeline-server.url\" : \"#{yarn_timelineserver_url}\", \"yarn.resourcemanager.url\" : \"#{yarn_resourcemanager_url}\" } } } ]' #{ambari_uri}/#{instance_name}"
-only_if {"curl -s -H \"X-Requested-By:ambari\" -u admin:admin -X GET #{ambari_uri}/#{instance_name} | grep instance_name | tr -d \", | head -1 | awk -F ':' '{print $2}'|tr -d ' '" != "#{instance_name}"}
-notifies :restart, 'service[ambari-server]', :immediately
+	command "curl -H \"X-Requested-By:ambari\" -u admin:admin -X POST -d '[{ \"ViewInstanceInfo\" : { \"label\" : \"Tez custom View\", \"properties\" : {\"yarn.timeline-server.url\" : \"#{yarn_timelineserver_url}\", \"yarn.resourcemanager.url\" : \"#{yarn_resourcemanager_url}\" } } } ]' #{ambari_url}/#{instance_name}"
+	only_if {"curl -s -H \"X-Requested-By:ambari\" -u admin:admin -X GET #{ambari_url}/#{instance_name} | grep instance_name | tr -d \", | head -1 | awk -F ':' '{print $2}'|tr -d ' '" != "#{instance_name}"}
+	notifies :restart, 'service[ambari-server]', :immediately
 end
 

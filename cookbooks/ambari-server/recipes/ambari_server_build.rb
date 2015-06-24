@@ -6,7 +6,6 @@ version '2.0.1'
 path "/tmp"
 action :put
 notifies :run,"bash[extracting_package]", :immediately
-#not_if File.exists?(node[:ambari][:bins_dir]/ambari-server-withoutdependencies.deb)
 not_if { ::File.exists?(node[:ambari][:install_dir])}
 end
 
@@ -19,7 +18,6 @@ dpkg-deb --control "#{node[:ambari][:deb_path]}" "#{node[:ambari][:temp_dir]}/DE
 #sed -i 's/, postgresql (>= 8.1)//' "#{node[:ambari][:temp_dir]}/DEBIAN/control"
 EOH
 notifies :run,"bash[Editing_Control_File]", :immediately
-#notifies :run,"ruby_block[edit_control_file]", :immediately
 end
 
 bash "Editing_Control_File" do
@@ -40,9 +38,9 @@ EOH
 end
 
 bash "Executing Build Bins Script" do
-cwd /home/vagrant/chef-bcpc
+cwd "/home/vagrant/chef-bcpc"
 code <<EOH
-./build_bins.sh 
+    ./build_bins.sh 
 EOH
 end
 
