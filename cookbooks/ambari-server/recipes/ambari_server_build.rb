@@ -37,8 +37,8 @@ EOH
 end
 
 bash "Executing Build Bins Script" do
-  cwd /home/vagrant/chef-bcpc
-  code <<EOH
+cwd "/home/vagrant/chef-bcpc"
+code <<EOH
     ./build_bins.sh 
 EOH
 end
