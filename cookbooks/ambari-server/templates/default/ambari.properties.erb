@@ -1,4 +1,3 @@
-#
 # Copyright 2011 The Apache Software Foundation
 #
 # Licensed to the Apache Software Foundation (ASF) under one
@@ -19,9 +18,6 @@
 
 #
 #Thu May 14 18:50:49 EDT 2015
-agent.package.install.task.timeout=1800
-agent.task.timeout=900
-agent.threadpool.size.max=25
 ambari-server.user=root
 ambari.python.wrap=ambari-python-wrap
 api.authenticate=true
@@ -32,22 +28,7 @@ client.threadpool.size.max=25
 common.services.path=/var/lib/ambari-server/resources/common-services
 custom.action.definitions=/var/lib/ambari-server/resources/custom_action_definitions
 java.home=/usr/lib/jvm/java-7-oracle-amd64
-java.releases=jdk1.7,jdk1.6
-jdk1.6.desc=Oracle JDK 1.6
-jdk1.6.dest-file=jdk-6u31-linux-x64.bin
-jdk1.6.home=/usr/jdk64/
-jdk1.6.jcpol-file=jce_policy-6.zip
-jdk1.6.jcpol-url=http://public-repo-1.hortonworks.com/ARTIFACTS/jce_policy-6.zip
-jdk1.6.re=Creating (jdk.*)/jre
-jdk1.6.url=http://public-repo-1.hortonworks.com/ARTIFACTS/jdk-6u31-linux-x64.bin
-jdk1.7.desc=Oracle JDK 1.7
-jdk1.7.dest-file=jdk-7u67-linux-x64.tar.gz
-jdk1.7.home=/usr/jdk64/
-jdk1.7.jcpol-file=UnlimitedJCEPolicyJDK7.zip
-jdk1.7.jcpol-url=http://public-repo-1.hortonworks.com/ARTIFACTS/UnlimitedJCEPolicyJDK7.zip
-jdk1.7.re=(jdk.*)/jre
-jdk1.7.url=http://public-repo-1.hortonworks.com/ARTIFACTS/jdk-7u67-linux-x64.tar.gz
-kerberos.keytab.cache.dir=/var/lib/ambari-server/data/cache
+java.releases=jdk1.7
 metadata.path=/var/lib/ambari-server/resources/stacks
 recommendations.dir=/var/run/ambari-server/stack-recommendations
 resources.dir=/var/lib/ambari-server/resources
@@ -62,14 +43,14 @@ server.http.session.inactive_timeout=1800
 server.jdbc.database=mysql
 server.jdbc.database_name=ambari
 server.jdbc.driver=com.mysql.jdbc.Driver
-server.jdbc.hostname=bcpc-vm2.bcpc.example.com
+server.jdbc.hostname="<%=#{float_host(get_nodes_for("ambari","ambari-server")[0].fqdn)}%>"
 server.jdbc.port=3306
 server.jdbc.postgres.schema=ambari
 server.jdbc.rca.driver=com.mysql.jdbc.Driver
-server.jdbc.rca.url=jdbc:mysql://bcpc-vm2.bcpc.example.com:3306/ambari
+server.jdbc.rca.url=jdbc:mysql://#{float_host(get_nodes_for("ambari","ambari-server")[0].fqdn)}:3306/ambari
 server.jdbc.rca.user.name=ambari
 server.jdbc.rca.user.passwd=/etc/ambari-server/conf/password.dat
-server.jdbc.url=jdbc:mysql://bcpc-vm2.bcpc.example.com:3306/ambari
+server.jdbc.url=jdbc:mysql://#{float_host(get_nodes_for("ambari","ambari-server")[0].fqdn)}:3306/ambari
 server.jdbc.user.name=ambari
 server.jdbc.user.passwd=/etc/ambari-server/conf/password.dat
 server.os_family=ubuntu12
